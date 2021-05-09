@@ -5,6 +5,14 @@ import UIKit
 public class CalculatorImpl {
 
     // MARK: - Init data
+    
+    fileprivate lazy var formatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second]
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        return formatter
+    }()
 
     /// Array of chart data.
     private var data: [ChartData]
@@ -590,7 +598,7 @@ extension CalculatorImpl: Calculator {
             )
 
             let chartValues: [(value: CGFloat, pointPosition: CGPoint)] = data.map {
-                let value = $0.values[0]
+                guard let value = $0.values.first else { return nil }
                 let pointPosition = CGPoint(
                     x: frame.minX + frame.width * 0.5,
                     y: y + (value - minValue) / boundaryDiff * height
@@ -599,9 +607,15 @@ extension CalculatorImpl: Calculator {
                     value: value,
                     pointPosition: pointPosition
                 )
+            }.compactMap { $0 }
+            
+            var stringTime: String?
+            if let firstDate = data.first?.dates.first {
+                stringTime = formatter.string(from: firstDate.timeIntervalSince(firstDate))
             }
+            
             return ChartDefinitionValues(
-                date: data[0].dates[0],
+                date: stringTime,
                 linePosition: (start: lineStartPosition, end: lineEndPosition),
                 chartValues: chartValues
             )
@@ -640,7 +654,7 @@ extension CalculatorImpl: Calculator {
         )
 
         let chartValues: [(value: CGFloat, pointPosition: CGPoint)] = data.map {
-            let value = $0.values[valueIndex]
+            guard let value = $0.values[safe: valueIndex] else { return nil }
             let pointPosition = CGPoint(
                 x: positionX,
                 y: y + (value - minValue) / boundaryDiff * height
@@ -649,10 +663,15 @@ extension CalculatorImpl: Calculator {
                 value: value,
                 pointPosition: pointPosition
             )
+        }.compactMap { $0 }
+        
+        var stringTime: String?
+        if let date = data.first?.dates[safe: valueIndex], let firstDate = data.first?.dates.first {
+            stringTime = formatter.string(from: date.timeIntervalSince(firstDate))
         }
 
         return ChartDefinitionValues(
-            date: data[0].dates[valueIndex],
+            date: stringTime,
             linePosition: (start: lineStartPosition, end: lineEndPosition),
             chartValues: chartValues
         )

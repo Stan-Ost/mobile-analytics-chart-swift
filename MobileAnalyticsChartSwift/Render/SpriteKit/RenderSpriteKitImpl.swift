@@ -1109,7 +1109,7 @@ extension RenderSpriteKitImpl: RenderDrawer {
             )
         }
 
-        definitionDateLabel.text = definitionConfiguration.view.dateFormatter.string(from: definitionValues.date)
+        definitionDateLabel.text = definitionValues.date
         maxDefinitionLabelWidth = max(
             maxDefinitionLabelWidth,
             definitionDateLabel.frame.width

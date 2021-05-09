@@ -1072,6 +1072,8 @@ extension RenderSpriteKitImpl: RenderDrawer {
             definitionsPoint.forEach { $0.isHidden = true }
             return
         }
+        
+        
 
         var maxDefinitionLabelWidth: CGFloat = 0
 
@@ -1110,12 +1112,14 @@ extension RenderSpriteKitImpl: RenderDrawer {
             )
         }
 
-        definitionDateLabel.text = definitionValues.date
+        definitionDateLabel.text = definitionValues.displayDateString
         maxDefinitionLabelWidth = max(
             maxDefinitionLabelWidth,
             definitionDateLabel.frame.width
         )
-
+        
+        moduleOutput?.didTrack(definitionValues.chartValues.map { $0.value }, date: definitionValues.date)
+        
         drawDefinitionView(
             definitionConfiguration: definitionConfiguration,
             linePositionX: definitionValues.linePosition.start.x,

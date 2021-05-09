@@ -615,7 +615,8 @@ extension CalculatorImpl: Calculator {
             }
             
             return ChartDefinitionValues(
-                date: stringTime,
+                date: data.first?.dates.first,
+                displayDateString: stringTime,
                 linePosition: (start: lineStartPosition, end: lineEndPosition),
                 chartValues: chartValues
             )
@@ -671,7 +672,8 @@ extension CalculatorImpl: Calculator {
         }
 
         return ChartDefinitionValues(
-            date: stringTime,
+            date: data.first?.dates[safe: valueIndex],
+            displayDateString: stringTime,
             linePosition: (start: lineStartPosition, end: lineEndPosition),
             chartValues: chartValues
         )

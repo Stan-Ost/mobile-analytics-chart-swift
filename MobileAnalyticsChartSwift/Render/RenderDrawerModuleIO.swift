@@ -1,6 +1,7 @@
 import CoreGraphics
+import Foundation
 
-public protocol RenderDrawerModuleInput: class {
+public protocol RenderDrawerModuleInput: AnyObject {
 
     func setConfiguration(_ configuration: RenderConfiguration)
 
@@ -17,7 +18,7 @@ public protocol RenderDrawerModuleInput: class {
     func fadeOutChart()
 }
 
-public protocol RenderDrawerModuleOutput: class {
+public protocol RenderDrawerModuleOutput: AnyObject {
     func didChangeRangeValue(
         rangeValue: RangeValue<CGFloat>
     )
@@ -31,4 +32,6 @@ public protocol RenderDrawerModuleOutput: class {
     func didHandlePinch(
         scale: CGFloat
     )
+    
+    func didTrack(_ values: [CGFloat], date: Date?)
 }

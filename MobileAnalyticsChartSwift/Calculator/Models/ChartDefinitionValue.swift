@@ -3,9 +3,12 @@ import Foundation
 
 /// Type of chart definition value.
 public struct ChartDefinitionValues {
+    
+    /// Date String
+    public let displayDateString: String?
 
     /// Date for definition.
-    public let date: String?
+    public let date: Date?
 
     /// Definition line position.
     public let linePosition: (start: CGPoint, end: CGPoint)
@@ -22,11 +25,13 @@ public struct ChartDefinitionValues {
     ///
     /// - Returns: Instance of `ChartDefinitionValues`.
     public init(
-        date: String?,
+        date: Date?,
+        displayDateString: String?,
         linePosition: (start: CGPoint, end: CGPoint),
         chartValues: [(value: CGFloat, pointPosition: CGPoint)]
     ) {
         self.date = date
+        self.displayDateString = displayDateString
         self.linePosition = linePosition
         self.chartValues = chartValues
     }

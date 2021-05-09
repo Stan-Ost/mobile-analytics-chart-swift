@@ -1,4 +1,5 @@
 import CoreGraphics
+import Foundation
 
 /// AnalyticsChartSpriteKit module inputData.
 public struct AnalyticsChartSpriteKitModuleInputData {
@@ -38,7 +39,7 @@ public struct AnalyticsChartSpriteKitModuleInputData {
 }
 
 /// AnalyticsChartSpriteKit module input
-public protocol AnalyticsChartSpriteKitModuleInput: class {
+public protocol AnalyticsChartSpriteKitModuleInput: AnyObject {
     func setChartViewModels(
         viewModels: [AnalyticsChartSpriteKitViewModel],
         silent: Bool
@@ -54,7 +55,7 @@ public protocol AnalyticsChartSpriteKitModuleInput: class {
 }
 
 /// AnalyticsChartSpriteKit module output
-public protocol AnalyticsChartSpriteKitModuleOutput: class {
+public protocol AnalyticsChartSpriteKitModuleOutput: AnyObject {
     func didChangeRangeValue(
         rangeValue: RangeValue<CGFloat>
     )
@@ -68,4 +69,6 @@ public protocol AnalyticsChartSpriteKitModuleOutput: class {
     func didHandlePinch(
         scale: CGFloat
     )
+    
+    func didTrack(_ values: [CGFloat], date: Date?)
 }

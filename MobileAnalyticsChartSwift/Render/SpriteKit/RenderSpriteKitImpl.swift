@@ -107,8 +107,6 @@ public class RenderSpriteKitImpl: SKScene {
 
     private var definitionValueLabels: [SKLabelNode] = []
 
-    private var definitionChartLines: [SKShapeNode] = []
-
     // MARK: - Range label node
 
     private var rangeLabel = SKLabelNode()
@@ -185,9 +183,6 @@ extension RenderSpriteKitImpl {
 
             let definitionValueLabel = SKLabelNode()
             definitionValueLabels.append(definitionValueLabel)
-
-            let definitionChartLine = SKShapeNode()
-            definitionChartLines.append(definitionChartLine)
         }
 
         chartsNode.forEach(addChild)
@@ -200,9 +195,6 @@ extension RenderSpriteKitImpl {
         definitionValueLabels.forEach {
             definitionView.addChild($0)
         }
-        definitionChartLines.forEach {
-            definitionView.addChild($0)
-        }
     }
 
     private func removeChartsNodes() {
@@ -211,7 +203,6 @@ extension RenderSpriteKitImpl {
         gradients.forEach { $0.removeFromParent() }
         definitionsPoint.forEach { $0.removeFromParent() }
         definitionValueLabels.forEach { $0.removeFromParent() }
-        definitionChartLines.forEach { $0.removeFromParent() }
         definitionDateLabel.removeFromParent()
 
         chartsNode.removeAll()
@@ -219,7 +210,6 @@ extension RenderSpriteKitImpl {
         gradients.removeAll()
         definitionsPoint.removeAll()
         definitionValueLabels.removeAll()
-        definitionChartLines.removeAll()
     }
 
     private func setupAnimation() {
@@ -261,9 +251,6 @@ extension RenderSpriteKitImpl {
         definitionValueLabels.forEach {
             $0.zPosition = 7
         }
-        definitionChartLines.forEach {
-            $0.zPosition = 7
-        }
     }
 
     private func setupNodes() {
@@ -302,13 +289,6 @@ extension RenderSpriteKitImpl {
         definitionValueLabels.forEach {
             $0.horizontalAlignmentMode = .left
             $0.verticalAlignmentMode = .top
-        }
-        definitionChartLines.forEach {
-            $0.path = CGPath(
-                rect: .init(x: 0, y: 0, width: 14, height: 2),
-                transform: nil
-            )
-            $0.lineWidth = 0
         }
     }
 
@@ -371,8 +351,7 @@ extension RenderSpriteKitImpl {
                 configureDefinitionPoint(
                     strokeColor: chartConfiguration.path.color,
                     fillColor: configuration.backgroundColor,
-                    definitionPoint: definitionsPoint[index],
-                    definitionChartLine: definitionChartLines[index]
+                    definitionPoint: definitionsPoint[index]
                 )
                 configureDefinitionNode(configurationDefinition)
             }
@@ -419,11 +398,9 @@ extension RenderSpriteKitImpl {
     private func configureDefinitionPoint(
         strokeColor: UIColor,
         fillColor: UIColor,
-        definitionPoint: RoundNode,
-        definitionChartLine: SKShapeNode
+        definitionPoint: RoundNode
     ) {
         definitionPoint.strokeColor = strokeColor
-        definitionChartLine.fillColor = strokeColor
         configureDefinitionPointFillColor(
             fillColor: fillColor,
             definitionPoint: definitionPoint
@@ -1040,7 +1017,7 @@ extension RenderSpriteKitImpl: RenderDrawer {
     }
 
     public func drawZeroLine() {
-        guard let configurationZeroLine = configuration.zeroLine else { return }
+        guard configuration.zeroLine != nil else { return }
 
         if let zeroLinePosition = calculator.makeZeroLine(
             frame: chartFrame,
@@ -1205,14 +1182,6 @@ extension RenderSpriteKitImpl: RenderDrawer {
             )
         }
 
-        definitionChartLines.enumerated().forEach {
-            let y = definitionViewRect.height - 12 - (CGFloat($0.offset) + 0.5) * valueLabelHeight
-            $0.element.position = .init(
-                x: 12,
-                y: y
-            )
-        }
-
         definitionValueLabels.enumerated().forEach {
             let y = definitionViewRect.height - 12 - CGFloat($0.offset) * valueLabelHeight
             $0.element.position = .init(
@@ -1334,3 +1303,4 @@ private extension RenderSpriteKitImpl {
         )
     }
 }
+

@@ -1076,6 +1076,8 @@ extension RenderSpriteKitImpl: RenderDrawer {
         var maxDefinitionLabelWidth: CGFloat = 0
 
         for (index, chartConfiguration) in chartsConfiguration.enumerated() {
+            guard let pointPosition = definitionValues.chartValues[safe: index]?.pointPosition else { return }
+
             let pointRadius = calculator.calculateLineWidth(
                 index: index,
                 minLineWidth: definitionConfiguration.point.minRadius,
@@ -1088,7 +1090,6 @@ extension RenderSpriteKitImpl: RenderDrawer {
             )
 
             let pointWidth = pointRadius * 2
-            let pointPosition = definitionValues.chartValues[index].pointPosition
             let pointRect = CGRect(
                 x: pointPosition.x - pointWidth / 2,
                 y: pointPosition.y - pointWidth / 2,

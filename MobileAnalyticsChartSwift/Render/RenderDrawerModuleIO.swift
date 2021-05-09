@@ -34,4 +34,6 @@ public protocol RenderDrawerModuleOutput: AnyObject {
     )
     
     func didTrack(_ values: [CGFloat], date: Date?)
+    
+    func didReleaseTouch()
 }

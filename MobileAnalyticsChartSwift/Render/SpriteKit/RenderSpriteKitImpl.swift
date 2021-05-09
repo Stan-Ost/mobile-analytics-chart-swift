@@ -628,6 +628,7 @@ extension RenderSpriteKitImpl {
             drawDefinition()
         case .ended:
             endHandleDefinition()
+            moduleOutput?.didReleaseTouch()
         default:
             break
         }

@@ -71,4 +71,6 @@ public protocol AnalyticsChartSpriteKitModuleOutput: AnyObject {
     )
     
     func didTrack(_ values: [CGFloat], date: Date?)
+    
+    func didReleaseTouch()
 }

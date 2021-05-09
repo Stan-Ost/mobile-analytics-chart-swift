@@ -98,6 +98,10 @@ extension AnalyticsChartSpriteKitPresenter: AnalyticsChartSpriteKitViewOutput {
 // MARK: - RenderDrawerModuleOutput
 
 extension AnalyticsChartSpriteKitPresenter: RenderDrawerModuleOutput {
+    public func didReleaseTouch() {
+        moduleOutput?.didReleaseTouch()
+    }
+    
     public func didTrack(_ values: [CGFloat], date: Date?) {
         moduleOutput?.didTrack(values, date: date)
     }

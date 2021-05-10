@@ -105,7 +105,7 @@ public class RenderSpriteKitImpl: SKScene {
 
     private var definitionDateLabel = SKLabelNode()
 
-    private var definitionValueLabels: [SKLabelNode] = []
+   // private var definitionValueLabels: [SKLabelNode] = []
 
     // MARK: - Range label node
 
@@ -180,9 +180,6 @@ extension RenderSpriteKitImpl {
 
             let definitionPoint = RoundNode()
             definitionsPoint.append(definitionPoint)
-
-            let definitionValueLabel = SKLabelNode()
-            definitionValueLabels.append(definitionValueLabel)
         }
 
         chartsNode.forEach(addChild)
@@ -192,9 +189,6 @@ extension RenderSpriteKitImpl {
             definitionNode.addChild($0)
         }
         definitionView.addChild(definitionDateLabel)
-        definitionValueLabels.forEach {
-            definitionView.addChild($0)
-        }
     }
 
     private func removeChartsNodes() {
@@ -202,14 +196,12 @@ extension RenderSpriteKitImpl {
         chartsClipNode.forEach { $0.removeFromParent() }
         gradients.forEach { $0.removeFromParent() }
         definitionsPoint.forEach { $0.removeFromParent() }
-        definitionValueLabels.forEach { $0.removeFromParent() }
         definitionDateLabel.removeFromParent()
 
         chartsNode.removeAll()
         chartsClipNode.removeAll()
         gradients.removeAll()
         definitionsPoint.removeAll()
-        definitionValueLabels.removeAll()
     }
 
     private func setupAnimation() {
@@ -248,9 +240,9 @@ extension RenderSpriteKitImpl {
 
         definitionView.zPosition = 6
         definitionDateLabel.zPosition = 7
-        definitionValueLabels.forEach {
-            $0.zPosition = 7
-        }
+//        definitionValueLabels.forEach {
+//            $0.zPosition = 7
+//        }
     }
 
     private func setupNodes() {
@@ -286,10 +278,10 @@ extension RenderSpriteKitImpl {
         definitionDateLabel.horizontalAlignmentMode = .left
         definitionDateLabel.verticalAlignmentMode = .top
         definitionView.lineWidth = 0
-        definitionValueLabels.forEach {
-            $0.horizontalAlignmentMode = .left
-            $0.verticalAlignmentMode = .top
-        }
+//        definitionValueLabels.forEach {
+//            $0.horizontalAlignmentMode = .left
+//            $0.verticalAlignmentMode = .top
+//        }
     }
 
     private func setupXAxisLabels() {
@@ -388,11 +380,11 @@ extension RenderSpriteKitImpl {
         definitionDateLabel.fontName = configuration.view.dateLabelFont.familyName
         definitionDateLabel.fontSize = configuration.view.dateLabelFont.pointSize
         definitionDateLabel.fontColor = configuration.view.dateLabelColor
-        definitionValueLabels.forEach {
-            $0.fontName = configuration.view.valueLabelFont.familyName
-            $0.fontSize = configuration.view.valueLabelFont.pointSize
-            $0.fontColor = configuration.view.valueLabelColor
-        }
+//        definitionValueLabels.forEach {
+//            $0.fontName = configuration.view.valueLabelFont.familyName
+//            $0.fontSize = configuration.view.valueLabelFont.pointSize
+//            $0.fontColor = configuration.view.valueLabelColor
+//        }
     }
 
     private func configureDefinitionPoint(
@@ -1102,15 +1094,6 @@ extension RenderSpriteKitImpl: RenderDrawer {
             definitionsPoint[index].path = UIBezierPath(ovalIn: pointRect).cgPath
             definitionsPoint[index].lineWidth = pointLineWidth
             definitionsPoint[index].isHidden = false
-
-            definitionValueLabels[index].text = analyticsDefinitionFactory.makeDefinitionText(
-                definitionValues.chartValues[index].value,
-                unit: chartConfiguration.unit
-            )
-            maxDefinitionLabelWidth = max(
-                maxDefinitionLabelWidth,
-                definitionValueLabels[index].frame.width
-            )
         }
 
         definitionDateLabel.text = definitionValues.displayDateString
@@ -1146,13 +1129,11 @@ extension RenderSpriteKitImpl: RenderDrawer {
         linePositionX: CGFloat,
         maxDefinitionLabelWidth: CGFloat
     ) {
-        let valueLabelHeight = definitionConfiguration.view.valueLabelFont.lineHeight.rounded(.up)
         let chartCount = CGFloat(chartsConfiguration.count)
         let definitionViewRect = makeDefinitionViewRect(
             chartRect: chartFrame,
             linePositionX: linePositionX,
             maxDefinitionLabelWidth: maxDefinitionLabelWidth,
-            valueLabelHeight: valueLabelHeight,
             dateLabelHeight: definitionConfiguration.view.dateLabelFont.lineHeight.rounded(.up),
             chartCount: chartCount
         )
@@ -1188,17 +1169,9 @@ extension RenderSpriteKitImpl: RenderDrawer {
             )
         }
 
-        definitionValueLabels.enumerated().forEach {
-            let y = definitionViewRect.height - 12 - CGFloat($0.offset) * valueLabelHeight
-            $0.element.position = .init(
-                x: 34,
-                y: y
-            )
-        }
-
-        let y = definitionViewRect.height - 14 - chartCount * valueLabelHeight
+        let y = definitionViewRect.height - 4
         definitionDateLabel.position = .init(
-            x: 34,
+            x: 4,
             y: y
         )
     }
@@ -1284,14 +1257,11 @@ private extension RenderSpriteKitImpl {
         chartRect: CGRect,
         linePositionX: CGFloat,
         maxDefinitionLabelWidth: CGFloat,
-        valueLabelHeight: CGFloat,
         dateLabelHeight: CGFloat,
         chartCount: CGFloat
     ) -> CGRect {
-        let width = maxDefinitionLabelWidth + 48
-        let height = valueLabelHeight * chartCount
-            + dateLabelHeight
-            + 22
+        let width = maxDefinitionLabelWidth + 8
+        let height = dateLabelHeight + 8
 
         let x: CGFloat
 
